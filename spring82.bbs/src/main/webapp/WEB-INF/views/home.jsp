@@ -13,16 +13,7 @@
     <p>  The time on the server is ${serverTime}. </p>
     <hr />
     
-    <h2>article 게시판 만들기</h2>  
-    <ul>
-        <li><a href="./board/articlelist"  target="_blank">./board/articlelist</a> </li>
-        <li>/board/articleview  ?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
-        <li>/board/articlewrite ?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
-        <li>/board/articlemodify?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
-        <li>/board/articledelete?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
-    </ul>
-    <br />
-    <hr />
+
     
     <h2>board 게시판 만들기</h2>  
     
@@ -93,8 +84,23 @@
         </li>
     </ol>    
     <hr />
-    
-    
+
+
+    <h2>article 게시판 만들기</h2>
+    <ul>
+        <li><a href="./board/articlelist" target="_blank">./board/articlelist</a>
+        </li>
+        <li>/board/articleview
+            ?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
+        <li>/board/articlewrite
+            ?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
+        <li>/board/articlemodify?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
+        <li>/board/articledelete?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
+    </ul>
+    <br />
+    <hr />
+
+
     <h2> RestController </h2>    
     <ol>
         <li>build.gradle 라이브러리 추가

@@ -165,13 +165,11 @@ public class ServiceBoard implements IServiceBoard {
 
     @Override
     public List<ModelArticle> getArticleList(String boardcd, String searchWord,
-            String start, String end) {
+            Integer start, Integer end) {
         List<ModelArticle> result = null;
         try {
             result = daoboard.getArticleList(boardcd, searchWord, start, end);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            // e.printStackTrace();
             logger.error("getArticleList" + e.getMessage() );
             throw e;
         }
@@ -241,10 +239,7 @@ public class ServiceBoard implements IServiceBoard {
         try {
             result = daoboard.increaseHit(articleno);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            // e.printStackTrace();
             logger.error("increaseHit" + e.getMessage() );
-            throw e;
         }
         return result;
     }
@@ -256,8 +251,6 @@ public class ServiceBoard implements IServiceBoard {
         try {
             result = daoboard.getNextArticle(boardcd, articleno, searchWord);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            // e.printStackTrace();
             logger.error("getNextArticle" + e.getMessage() );
             throw e;
         }

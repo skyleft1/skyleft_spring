@@ -19,6 +19,34 @@ public class ModelUser {
     Date     InsertDT    ; // Date            NULL
     String   UpdateUID   ; // VARCHAR(40)     NULL                            
     Date     UpdateDT    ; // Date            NULL
+    
+    
+    
+    
+    public ModelUser() {
+        super();
+    }
+    public ModelUser(String userid, String passwd) {
+        super();
+        this.userid = userid;
+        this.passwd = passwd;
+    }
+    public ModelUser(Integer userno, String userid, String email, String passwd,
+            String name, String mobile, Boolean retireYN, String insertUID,
+            Date insertDT, String updateUID, Date updateDT) {
+        super();
+        this.userno = userno;
+        this.userid = userid;
+        this.email = email;
+        this.passwd = passwd;
+        this.name = name;
+        this.mobile = mobile;
+        this.retireYN = retireYN;
+        InsertUID = insertUID;
+        InsertDT = insertDT;
+        UpdateUID = updateUID;
+        UpdateDT = updateDT;
+    }
     public Integer getUserno() {
         return userno;
     }
@@ -85,32 +113,6 @@ public class ModelUser {
     public void setUpdateDT(Date updateDT) {
         UpdateDT = updateDT;
     }
-    
-    
-    public ModelUser() {
-        super();
-    }
-    public ModelUser(String userid) {
-        super();
-
-        this.userid = userid;
-    }
-    
-    
-    public ModelUser(String id, String pd) {
-        super();
-        this.userid = id;
-        this.passwd = pd;
-    }
-    public ModelUser(String id, String name, String email, String password) {
-        super();
-
-        this.userid = id;
-        this.name = name;
-        this.email = email;
-        this.passwd = password;
-    } 
-    
     @Override
     public String toString() {
         return "ModelUser [userno=" + userno + ", userid=" + userid + ", email="
@@ -119,5 +121,7 @@ public class ModelUser {
                 + ", InsertDT=" + InsertDT + ", UpdateUID=" + UpdateUID
                 + ", UpdateDT=" + UpdateDT + "]";
     }
+    
+    
     
 }

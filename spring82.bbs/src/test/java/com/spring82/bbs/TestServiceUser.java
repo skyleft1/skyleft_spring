@@ -12,61 +12,41 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.ui.Model;
 
 import com.spring82.bbs.model.ModelUser;
 import com.spring82.bbs.service.IServiceUser;
 
-//Sorts by method name
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+
 public class TestServiceUser {
     
     //private static SqlSession session = null;
     private static ApplicationContext context = null;
     private static IServiceUser service = null;
 
-    Date from = new Date();
-    SimpleDateFormat tf = new SimpleDateFormat("yyMMddhhmmss");
-    String dtm = tf.format(from);
-
-    String userid = "MISS A" + dtm;
-    
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         context = new ClassPathXmlApplicationContext("file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml");
         service = context.getBean("serviceuser", IServiceUser.class);
-    }
-    
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-        //((ClassPathXmlApplicationContext)context).close();
-    }
+    } // service 말고 user로 해도 된다.
     
 
     @Test
     public void testInsertUser() {
         ModelUser user = new ModelUser();
-        user.setUserid( this.userid );
-        user.setEmail("missa@naver.com");
-        user.setMobile("010-3214-6879");
-        user.setInsertDT(from);
-        user.setInsertUID("ufy uygyu");
-        user.setName("miss");
-        user.setPasswd("miss1234");
-        user.setUpdateDT(from);
-        user.setUpdateUID("uytf yui");
+        user.setUserid("aa1");
+        user.setEmail("dfdfdfdf");
+        user.setPasswd("aa2");
         
         int result = service.insertUser(user);
-        
         assertEquals(result, 1);
     }
 
     @Test
     public void testLogin() {
-        ModelUser result = service.login(this.userid, "miss1234");
-        
-        assertNotNull(result);
-        assertEquals(result.getUserid(), this.userid );
+        ModelUser result = new ModelUser("aa1", "aa2");
+        assertEquals(result.getPasswd(), "aa2");
     }
 
     @Test
@@ -76,40 +56,26 @@ public class TestServiceUser {
     @Test
     public void testupdateUserInfo() {
         ModelUser updatevalue = new ModelUser();
-        updatevalue.setEmail("sonyo@hanmail.net");
-        updatevalue.setMobile("010-5555-6666");
-        updatevalue.setName("98g uhu ihuu");
-        updatevalue.setRetireYN(true);
-        updatevalue.setPasswd("girls8888");
-        updatevalue.setUpdateDT(from);
-        updatevalue.setUpdateUID("JYP");
+        ModelUser searchValue = new ModelUser();
+        searchValue.setUserid("aa1");
+        updatevalue.setPasswd("aa2");
+        updatevalue.setEmail("dgdf");
         
-        ModelUser searchvalue = new ModelUser();
-        searchvalue.setUserid( this.userid ); 
-        
-        int result = service.updateUserInfo(updatevalue, searchvalue);
-        
+        int result = service.updateUserInfo(updatevalue, searchValue);
         assertEquals(result, 1);
     }
 
     @Test
     public void testupdatePasswd() {
-        
-        ModelUser user = service.selectUserOne(new ModelUser(this.userid ) );
-        user.setPasswd( "uuji" );
-        user.setUserid( this.userid ); 
-        
-        int result = service.updatePasswd("uuji", user.getPasswd(), user.getUserid() );
-        
+        int result = service.updatePasswd("aa3", "aa2", "aa1");
         assertEquals(result, 1);
     }
 
     @Test
     public void testDeleteUser() {
-        ModelUser searchvalue = new ModelUser();
-        searchvalue.setUserid("MISS A"); 
-        
-        int result = service.deleteUser(searchvalue);
+        ModelUser model = new ModelUser();
+        model.setUserid("aa1"); 
+        int result = service.deleteUser(model);
         
         assertEquals(result, 1);
     }
@@ -117,22 +83,31 @@ public class TestServiceUser {
     @Test
     public void testSelectUserOne() {
         ModelUser user = new ModelUser();
-        user.setUserno(1);
+        user.setUserno(2);
 
         ModelUser result = service.selectUserOne(user);
-        
-        assertEquals(result.getUserid(), "MISS A");
+        assertEquals(result.getUserid(), "aa1");
     }
 
     @Test
     public void testSelectUserList() {
-        
+        ModelUser user = new ModelUser();
+        user.setName("miss");
+
+        List<ModelUser> result = new ArrayList<ModelUser>(); 
+                
+        result = service.selectUserList(user); 
+        assertEquals( result.size(), 1 );
+    }
+    
+    @Test
+    public void testCheckuserid() {
         ModelUser user = new ModelUser();
         user.setName("miss");
 
         List<ModelUser> result = service.selectUserList(user); 
-        assertNotNull( result );
-        assertTrue( result.size() > 1 );
+
+        assertEquals( result.size(), 1 );
     }
     
 }

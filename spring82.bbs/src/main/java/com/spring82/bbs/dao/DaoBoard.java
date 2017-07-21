@@ -80,18 +80,18 @@ public class DaoBoard implements IDaoBoard {
         Map<String, String> map = new HashMap<String, String>();
         map.put("boardcd", boardcd);
         map.put("searchWord", searchWord);
-        return session.insert("mapper.mapperBoard.getArticleTotalRecord", map);
+        return session.selectOne("mapper.mapperBoard.getArticleTotalRecord", map);
     }
     
     @Override
     public List<ModelArticle> getArticleList(String boardcd, String searchWord,
-            String start, String end) {
-        Map<String, String> map = new HashMap<String, String>();
+            Integer start, Integer end) {
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("boardcd", boardcd);
         map.put("searchWord", searchWord);
         map.put("start", start);
         map.put("end", end);
-        return session.selectOne("mapper.mapperBoard.getArticleList", map);
+        return session.selectList("mapper.mapperBoard.getArticleList", map);
     }
     @Override
     public ModelArticle getArticle(int articleno) {

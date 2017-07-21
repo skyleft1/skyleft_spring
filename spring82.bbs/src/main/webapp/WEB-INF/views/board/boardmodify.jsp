@@ -17,11 +17,41 @@
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript">
-        function check() {
-            var form = document.getElementById("modifyForm");
-            //TODO 유효성 검사
-            return true;
-        }
+    
+        $(document).ready(function(){
+        	$('#boardlist').click(function(e){
+        		window.location='/board/boardview/${board.boardcd}' ;
+        	});
+        	$('#boardview').click(function(e){
+        		window.location='/board/boardlist' ;
+            });
+        	$('#boardsubmit').click(function(e){
+        		 var list = $('.req_input');
+
+        	        for( var i=0; i< list.length; i= i+1){
+
+        	        if( $( list[i] ).val() === '' ) {
+        	        list[i].focus();
+
+        	        if( $(list[i]).next().length == 0 ) {
+        	        $(list[i]).after('<label>입력하세요</label>');
+        	        }
+
+        	        return false;
+        	        }
+        	        }
+
+        	        // submit 호출 : form 의 action 이 실행됨.
+        	        $('#modifyForm').submit();
+        	        });
+
+        	        $('.req_input, .req_long').keyup( function (e) {
+        	        if( $(this).val() !== '') {
+        	        $(this).next().remove();
+        	        }
+        	        });
+        });
+    
     </script>
 </head>
 <body>
@@ -44,18 +74,18 @@
                 <!-- 본문 시작 -->
                 <div id="bbs">
                     <h2>수정</h2>
-                    <form id="modifyForm" action="${actionurl}" method="post" enctype="application/x-www-form-urlencoded" onsubmit="return check()">
+                    <form id="modifyForm" action="/board/boardmodify" method="post" enctype="application/x-www-form-urlencoded" >
                         <div>                        
                             <p style="margin: 0; padding: 0;">
                                 Borad Code :
-                                <input type="text" id="boardcd"  name="boardcd" value="${model.boardcd}" readonly="readonly" />
+                                <input type="text" id="boardcd"  name="boardcd" value="${model.boardcd}" readonly="readonly" class="req_input"/>
                             </p>
                         </div>
                         
                         <div>
                             <p style="margin: 0; padding: 0;">
                                 Board Name : 
-                                <input type="text" id="boardnm"  name="boardnm" value="${model.boardnm}" />
+                                <input type="text" id="boardnm"  name="boardnm" value="${model.boardnm}" class="req_input"/>
                             </p>
                         </div>
                         
@@ -67,9 +97,9 @@
                         </div>
 
                         <div style="text-align: left; padding-bottom: 15px;">
-                            <input type="submit" value="전송" /> 
-                            <input type="button" value="상세보기" onclick="window.location='/board/boardview' ;" /> 
-                            <input type="button" value="목록" onclick="window.location='/board/boardlist' ;" />
+                            <input type="button" value="전송" id="boardsubmit"/> 
+                            <input type="button" value="상세보기" id="boardview" /> 
+                            <input type="button" value="목록" id="boardlist" />
                             <input type="reset" value="취소" />
                         </div>
                     </form>

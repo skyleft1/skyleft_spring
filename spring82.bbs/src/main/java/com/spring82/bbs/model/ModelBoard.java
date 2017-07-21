@@ -29,7 +29,10 @@ public class ModelBoard {
         return this.UseYN;    
     }
     public void setUseYN(Boolean useYN) {
-        UseYN = useYN;
+        if(this.UseYN == null){
+            this.UseYN = false;
+        } else 
+            this.UseYN = useYN;
     }
     public String getInsertUID() {
         return InsertUID;

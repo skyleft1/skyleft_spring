@@ -64,7 +64,7 @@ public interface IDaoBoard {
     
     int getArticleTotalRecord(String boardcd, String searchWord);
     
-    List<ModelArticle> getArticleList(String boardcd, String searchWord, String start, String end);
+    List<ModelArticle> getArticleList(String boardcd, String searchWord, Integer start, Integer end);
     
     ModelArticle getArticle(int articleno);
     
