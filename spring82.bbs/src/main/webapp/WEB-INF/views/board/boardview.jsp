@@ -26,33 +26,32 @@
             $('.boarddelete').click( function(e){
                 //window.location = "/board/boarddelete/${board.boardcd}" ;
                 
-
                 $.ajax({
                     url : '/board/boarddelete/${board.boardcd}',
-                    data: null,        // 사용하는 경우에는 { data1:'test1', data2:'test2' }
-                    type: 'post',       // get, post
-                    timeout: 30000,    // 30초
-                    dataType: 'text',  // text, html, xml, json, jsonp, script
+                    data: null, // requestparam 사용하는 경우 { boarcd: '${board.boardcd}' }
+                    type: 'post', // get, post
+                    timeout: 30000, // 30초
+                    dataType: 'text', // text, html, xml, json, jsonp, script
                     beforeSend : function() {
-                        // 통신이 시작되기 전에 이 함수를 타게 된다.
-                        //$('#message1').html('<img src="./loading.gif">');
                     }
-                }).done( function(data, textStatus, xhr ){
-                    // 통신이 성공적으로 이루어졌을 때 이 함수를 타게 된다.
-                	window.location = "/board/boardlist";
-                }).fail( function(xhr, textStatus, error ) {
-                    // 통신이 실패했을 때 이 함수를 타게 된다.
-                    var msg ='';
-                    msg += "code:"    + xhr.status         + "\n";
-                    msg += "message:" + xhr.responseText   + "\n";
-                    msg += "status:"  + textStatus         + "\n";
-                    msg += "error  : "+ error              + "\n";
-                    alert( msg );
-                    console.log(msg);
-                }).always( function(data, textStatus, xhr ) {
-                    // 통신이 실패했어도 성공했어도 이 함수를 타게 된다.
-                    //$('#message1 > img').remove();
-                });
+                    }).done( function(data, textStatus, xhr ){
+                        window.location = "/board/boardlist" ;
+                    }).done( function(data, textStatus, xhr ){
+                        
+                    }).fail( function(xhr, textStatus, error ) {
+                        // 통신이 실패했을 때 이 함수를 타게 된다.
+                        var msg ='';
+                        msg += "code:"    + xhr.status         + "\n";
+                        msg += "message:" + xhr.responseText   + "\n";
+                        msg += "status:"  + textStatus         + "\n";
+                        msg += "error  : "+ error              + "\n";
+                        alert( msg );
+                        console.log(msg);
+                    }).always( function(data, textStatus, xhr ) {
+                        // 통신이 실패했어도 성공했어도 이 함수를 타게 된다.
+                        //$('#message1 > img').remove();
+                    });
+
             });
         });
     </script>

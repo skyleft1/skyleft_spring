@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.spring82.bbs.commons.PagingHelper;
+import com.spring82.bbs.model.ModelArticle;
+import com.spring82.bbs.model.ModelAttachFile;
 import com.spring82.bbs.model.ModelBoard;
+import com.spring82.bbs.model.ModelComments;
 import com.spring82.bbs.service.IServiceBoard;
 
 
@@ -34,6 +38,8 @@ public class BoardController {
 	
     @RequestMapping(value = "/boardlist", method = RequestMethod.GET)
     public String boardlist(Model model
+            , @RequestParam(value="curPage", defaultValue="1") int curPage
+            , @RequestParam(value="searchWord", defaultValue="") String searchWord
             )  {
         logger.info("boardlist");
 
@@ -42,6 +48,43 @@ public class BoardController {
 
         return "board/boardlist";
     }
+    
+//    @RequestMapping(value = "/articlelist/{boardcd}", method = RequestMethod.GET)
+//    public String articlelist(Model model
+//            , @PathVariable(value="boardcd") String boardcd
+//            , @RequestParam(value="curPage", defaultValue="1") int curPage
+//            , @RequestParam(value="searchWord", defaultValue="") String searchWord
+//            )  {
+//        logger.info("articlelist");
+//        
+//        String boardnm = boardsrv.getBoardName(boardcd);
+//                
+//        model.addAttribute("boardnm", boardnm);
+//        model.addAttribute("boardcd", boardcd);
+//        model.addAttribute("curPage", curPage);
+//        model.addAttribute("searchWord", searchWord);
+//        
+//        // 전체 개시글 갯수 가져오기
+//        int totalRecord = boardsrv.getArticleTotalRecord(boardcd, searchWord);
+//        
+//        // 페이지 처리
+//        PagingHelper paging = new PagingHelper(totalRecord, curPage);
+//        int start = paging.getStartRecord();
+//        int end = paging.getEndRecord();
+//            
+//        List<ModelArticle> list = boardsrv.getArticleList(boardcd, searchWord, start, end);
+//        model.addAttribute("list", list);
+//        model.addAttribute("no", paging.getListNo());
+//        model.addAttribute("prevLink", paging.getPrevLink());
+//        model.addAttribute("firstPage", paging.getFirstPage());
+//        model.addAttribute("pageLinks", paging.getPageLinks());
+//        model.addAttribute("nextLink", paging.getNextLink());
+//        model.addAttribute("lastPage", paging.getLastPage());
+//        
+//        return "board/articlelist";
+//    }
+    
+    
 
     @RequestMapping(value = "/boardwrite", method = RequestMethod.GET)
     public String boardwrite(Model model
@@ -137,13 +180,13 @@ public class BoardController {
         }
     }
     
-    
     @RequestMapping(value = "/boarddelete/{boardcd}", method = RequestMethod.POST)
     public String boarddelete(Model model
-            , @PathVariable(value="boardcd" ) String boardcd
+            , @PathVariable(value="boardcd") String boardcd 
             )  {
-        logger.info("boarddelete");
-        ModelBoard board = new ModelBoard(); 
+        logger.info("boardlist");
+
+        ModelBoard board = new ModelBoard();
         board.setBoardcd(boardcd);
         
         int result = boardsrv.deleteBoard(board);
@@ -152,8 +195,174 @@ public class BoardController {
             return "redirect:/board/boardlist";
         }
         else {
-            return "board/boardview";
+            return "redirect:/board/boardview" + boardcd;
         }
-//        model.addAttribute("model", board);
+    }
+    
+    
+    // 여기서부터 article
+    
+    @RequestMapping(value = "/articlelist/{boardcd}", method = RequestMethod.GET)
+    public String articlelist(Model model
+            , @PathVariable(value="boardcd") String boardcd
+            , @RequestParam(value="curPage", defaultValue="1") int curPage
+            , @RequestParam(value="searchWord", defaultValue="") String searchWord
+            )  {
+        logger.info("articlelist");
+        
+        String boardnm = boardsrv.getBoardName(boardcd);
+                
+        model.addAttribute("boardnm", boardnm);
+        model.addAttribute("boardcd", boardcd);
+        model.addAttribute("curPage", curPage);
+        model.addAttribute("searchWord", searchWord);
+        
+        // 전체 개시글 갯수 가져오기
+        int totalRecord = boardsrv.getArticleTotalRecord(boardcd, searchWord);
+        
+        // 페이지 처리
+        PagingHelper paging = new PagingHelper(totalRecord, curPage);
+        int start = paging.getStartRecord();
+        int end = paging.getEndRecord();
+            
+        List<ModelArticle> list = boardsrv.getArticleList(boardcd, searchWord, start, end);
+        model.addAttribute("list", list);
+        model.addAttribute("no", paging.getListNo());
+        model.addAttribute("prevLink", paging.getPrevLink());
+        model.addAttribute("firstPage", paging.getFirstPage());
+        model.addAttribute("pageLinks", paging.getPageLinks());
+        model.addAttribute("nextLink", paging.getNextLink());
+        model.addAttribute("lastPage", paging.getLastPage());
+        
+        return "/board/articlelist";
+    }
+    
+    //http://localhost:8080/board/articlelist/free
+    @RequestMapping(value = "/articleview/{boardcd}/{articleno}", method = RequestMethod.GET)
+    public String articleview(Model model
+            , @PathVariable(value="boardcd") String boardcd
+            , @PathVariable(value="articleno") Integer articleno
+            , @RequestParam(value="curPage", defaultValue="1") Integer curPage 
+            , @RequestParam(value="searchWord", defaultValue="") String searchWord
+            )  {
+        model.addAttribute("curPage", curPage);
+        model.addAttribute("searchWord", searchWord);
+//        
+//        boardNm
+        String boardnm = boardsrv.getBoardName(boardcd);
+        model.addAttribute("boardnm", boardnm);
+        
+//        thisArticle
+        ModelArticle thisArticle = boardsrv.getArticle(articleno);   
+        model.addAttribute("thisArticle", thisArticle);
+        
+//        attachFileList
+        List<ModelAttachFile> attachFileList = boardsrv.getAttachFileList(articleno);
+        model.addAttribute("attachFileList", attachFileList);
+        
+//        commentList
+        List<ModelComments> commentList = boardsrv.getCommentList(articleno);
+        model.addAttribute("commentList", commentList);
+
+//        nextArticle
+        ModelArticle nextArticle = boardsrv.getNextArticle(boardcd, articleno, searchWord) ;
+        model.addAttribute("nextArticle", nextArticle);
+        
+//        prevArticle
+        ModelArticle prevArticle = boardsrv.getPrevArticle(boardcd, articleno, searchWord);
+        model.addAttribute("prevArticle", prevArticle);
+        
+//        articleList
+     // 전체 개시글 갯수 가져오기
+        int totalRecord = boardsrv.getArticleTotalRecord(boardcd, searchWord);
+        
+        // 페이지 처리
+        PagingHelper paging = new PagingHelper(totalRecord, curPage);
+        int start = paging.getStartRecord();
+        int end = paging.getEndRecord();
+            
+        List<ModelArticle> list = boardsrv.getArticleList(boardcd, searchWord, start, end);
+        model.addAttribute("list", list);
+        model.addAttribute("no", paging.getListNo());
+        model.addAttribute("prevLink", paging.getPrevLink());
+        model.addAttribute("pageLinks", paging.getPageLinks());
+        model.addAttribute("nextLink", paging.getNextLink());
+        
+//        no
+//        prevLink
+//        pageLinks
+//        nextLink
+        
+        return "/board/articleview";
+    }
+    
+    @RequestMapping(value = "/articlemodify/{boardcd}/{articleno}", method = RequestMethod.GET)
+    public String articlemodify(Model model
+            ,@PathVariable(value="boardcd") String boardcd
+            ,@PathVariable(value="articleno") Integer articleno
+            ,@RequestParam(value="curPage"   , defaultValue="1") int    curPage
+            ,@RequestParam(value="searchWord", defaultValue="" ) String searchWord) {
+            
+            String boardnm = boardsrv.getBoardName(boardcd);
+            model.addAttribute("boardnm",boardnm);
+            
+            ModelArticle thisArticle = boardsrv.getArticle(articleno);
+            model.addAttribute("thisArticle",thisArticle);
+        
+            model.addAttribute("articleno", articleno);
+            model.addAttribute("curPage", curPage);
+            model.addAttribute("searchWord", searchWord);
+        
+         return "/board/articlemodify";
+    }
+    
+    @RequestMapping(value = "/articlemodify", method = RequestMethod.POST)
+    public String articlemodify2(Model model
+            ,@RequestParam(value="boardcd", defaultValue="" ) String boardcd
+            ,@RequestParam(value="articleno", defaultValue=""  ) Integer articleno
+            ,@RequestParam(value="curPage"   , defaultValue="1") int    curPage
+            ,@RequestParam(value="searchWord", defaultValue="" ) String searchWord
+            , @ModelAttribute ModelArticle article
+            ) {
+            
+        ModelArticle curArticle = new ModelArticle();
+            
+        model.addAttribute("boardcd",boardcd);
+        model.addAttribute("articleno", articleno);
+        model.addAttribute("curPage", curPage);
+        model.addAttribute("searchWord", searchWord);
+            
+            
+            curArticle = boardsrv.getArticle(article.getArticleno());
+
+            int result = boardsrv.updateArticle(article, curArticle);
+            if (result == 1 ){
+                return "redirect:/board/articleview/{boardcd}/{articleno}";
+            } else {
+                return "redirect:/board/articleview/{boardcd}/{articleno}";
+            }
+    }
+    
+    @RequestMapping(value = "/articledelete/{boardcd}/{articleno}", method = RequestMethod.GET)
+    public String articledelete(Model model
+            , @PathVariable(value="boardcd") String boardcd
+            , @PathVariable(value="articleno") Integer articleno
+            , @RequestParam(value="curPage"   , defaultValue="1") int    curPage
+            , @RequestParam(value="searchWord", defaultValue="" ) String searchWord
+            , @ModelAttribute ModelArticle article
+            ) {
+            
+        model.addAttribute("boardcd",boardcd);
+        model.addAttribute("articleno", articleno);
+        model.addAttribute("curPage", curPage);
+        model.addAttribute("searchWord", searchWord);
+        
+        int result = boardsrv.deleteArticle(article);
+        if (result == 1 ){
+            model.addAttribute("msg", "성공~~~~~~");
+            return "redirect:/board/articlelist/{boardcd}";
+        } else {
+            return "redirect:/board/articlelist/{boardcd}";
+        }
     }
 }

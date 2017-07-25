@@ -75,6 +75,15 @@ public class DaoBoard implements IDaoBoard {
     public int insertBoardList(List<ModelBoard> board) {
         return session.insert("mapper.mapperBoard.insertBoardList", board);
     }
+    
+    @Override
+    public int getBoardTotalRecord(String boardcd, String searchWord) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("boardcd", boardcd);
+        map.put("searchWord", searchWord);
+        return session.selectOne("mapper.mapperBoard.getBoardTotalRecord", map);
+    }
+    
     @Override
     public int getArticleTotalRecord(String boardcd, String searchWord) {
         Map<String, String> map = new HashMap<String, String>();
@@ -179,6 +188,7 @@ public class DaoBoard implements IDaoBoard {
     public int deleteComment(ModelComments comment) {
         return session.insert("mapper.mapperBoard.deleteComment", comment);
     }
+
 
 
     

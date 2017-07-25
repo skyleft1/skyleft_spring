@@ -120,6 +120,7 @@ public class TestServiceBoard {
     public void insertArticle() {
         ModelArticle model = new ModelArticle();
         model.setArticleno(model.getArticleno().MAX_VALUE +1);
+        model.setBoardcd("free");
         model.setTitle("추가");
         int result = board.insertArticle(model);
         assertEquals(result, 1);

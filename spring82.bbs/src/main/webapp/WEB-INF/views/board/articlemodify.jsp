@@ -10,11 +10,12 @@
     <meta name="Keywords" content="게시판 수정하기 폼" />
     <meta name="Description" content="게시판 수정하기 폼" />
     
-    <title>${boardNm }</title>
+    <title>${boardnm }</title>
     
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript">
+    
     	function check() {
     		var form = document.getElementById("modifyForm");
     		//TODO 유효성 검사
@@ -49,10 +50,10 @@
 				<div id="url-navi">BBS</div>
 
 				<!-- 본문 시작 -->
-				<h1>${boardNm }</h1>
+				<h1>${boardnm }</h1>
 				<div id="bbs">
 					<h2>수정</h2>
-					<form id="modifyForm" action="articlemodify" method="post" enctype="multipart/form-data" onsubmit="return check()">
+					<form id="modifyForm" action="/board/articlemodify" method="post" enctype="multipart/form-data" onsubmit="return check()">
 						<p style="margin: 0; padding: 0;">
 							<input type="hidden" name="articleno" value="${articleno }" />
 							<input type="hidden" name="boardcd" value="${boardcd }" />

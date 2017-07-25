@@ -18,7 +18,7 @@ public class ModelArticle {
     Date    UpdateDT  ;
     
     // 추가된 필드. 
-    Integer attachFileNum;
+    Integer attachfileNum;
     Integer commentNum;
     
     
@@ -96,10 +96,10 @@ public class ModelArticle {
         UpdateDT = updateDT;
     }    
     public Integer getAttachFileNum() {
-        return attachFileNum;
+        return attachfileNum;
     }
-    public void setAttachFileNum(Integer attachFileNum) {
-        this.attachFileNum = attachFileNum;
+    public void setAttachFileNum(Integer attachfileNum) {
+        this.attachfileNum = attachfileNum;
     }
     public Integer getCommentNum() {
         return commentNum;

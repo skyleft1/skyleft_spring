@@ -44,7 +44,10 @@
         <li><span> boardview 에 boardmodify 연결하기 </span></li>
         <li><a href="./board/boardwrite" target="_blank">./board/boardwrite</a></li>
         <li><span> boardlist와 boardview 에 boardwrite 연결하기 </span></li>
-        <li><span> boardview 에 boarddelete 연결하기 </span></li>
+        <li><span> boardview 에 boarddelete 연결하기 (delete는 반드시 post 방식으로 처리해야함 get nono)
+                    ajax 이용하는 방식 <br>
+                    form 이용하는 방식 (form이 없을경우 반드시 ajax이용)
+        </span></li> 
         <li>jsp 파일에 layout include 하기
             <ul> 
                 <li> boardlist.jsp      </li>
@@ -88,7 +91,7 @@
 
     <h2>article 게시판 만들기</h2>
     <ul>
-        <li><a href="./board/articlelist" target="_blank">./board/articlelist</a>
+        <li><a href="./board/articlelist/free" target="_blank">./board/articlelist</a>
         </li>
         <li>/board/articleview
             ?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>

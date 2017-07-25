@@ -29,9 +29,6 @@ public class ModelBoard {
         return this.UseYN;    
     }
     public void setUseYN(Boolean useYN) {
-        if(this.UseYN == null){
-            this.UseYN = false;
-        } else 
             this.UseYN = useYN;
     }
     public String getInsertUID() {
@@ -77,4 +74,6 @@ public class ModelBoard {
                 + ", InsertDT=" + InsertDT + ", UpdateUID=" + UpdateUID
                 + ", UpdateDT=" + UpdateDT + "]";
     }
+    
+    
 }

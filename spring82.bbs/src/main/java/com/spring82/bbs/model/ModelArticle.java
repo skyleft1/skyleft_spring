@@ -21,7 +21,7 @@ public class ModelArticle {
     Date    UpdateDT  ;
     
     // 추가된 필드. 
-    Integer attachFileNum;
+    Integer attachfileNum;
     Integer commentNum;
     
     
@@ -98,11 +98,11 @@ public class ModelArticle {
     public void setUpdateDT(Date updateDT) {
         UpdateDT = updateDT;
     }    
-    public Integer getAttachFileNum() {
-        return attachFileNum;
+    public Integer getAttachfileNum() {
+        return attachfileNum;
     }
-    public void setAttachFileNum(Integer attachFileNum) {
-        this.attachFileNum = attachFileNum;
+    public void setAttachfileNum(Integer attachfileNum) {
+        this.attachfileNum = attachfileNum;
     }
     public Integer getCommentNum() {
         return commentNum;
@@ -115,14 +115,17 @@ public class ModelArticle {
     public ModelArticle() {
         super();
     }
-    
-    
     @Override
     public String toString() {
         return "ModelArticle [articleno=" + articleno + ", boardcd=" + boardcd
                 + ", title=" + title + ", content=" + content + ", email="
                 + email + ", hit=" + hit + ", regdate=" + regdate + ", UseYN="
                 + UseYN + ", InsertUID=" + InsertUID + ", InsertDT=" + InsertDT
-                + ", UpdateUID=" + UpdateUID + ", UpdateDT=" + UpdateDT + "]";
+                + ", UpdateUID=" + UpdateUID + ", UpdateDT=" + UpdateDT
+                + ", attachfileNum=" + attachfileNum + ", commentNum="
+                + commentNum + "]";
     }
+    
+    
+
 }

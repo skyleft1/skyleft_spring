@@ -10,7 +10,7 @@
     <meta name="Keywords" content="게시판 상세보기" />
     <meta name="Description" content="게시판 상세보기" />
     
-    <title>${boardNm }</title>
+    <title>${boardnm }</title>
     
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
     <script src="/resources/js/jquery-3.1.1.js"></script>
@@ -31,29 +31,7 @@
     			form.submit();
     		}
     	}
-    
-    	function goList(curPage) {
-    		var form = document.getElementById("listForm");
-    		form.curPage.value = curPage;
-    		form.submit();
-    	}
-    
-    	function goView(articleno) {
-    		var form = document.getElementById("viewForm");
-    		form.articleno.value = articleno;
-    		form.submit();
-    	}
-    
-    	function goWrite() {
-    		var form = document.getElementById("writeForm");
-    		form.submit();
-    	}
-    
-    	function goModify() {
-    		var form = document.getElementById("modifyForm");
-    		form.submit();
-    	}
-    	
+        
     	function goDelete() {
     		var chk = confirm('정말로 삭제하시겠습니까?');
     		if (chk == true) {
@@ -61,9 +39,39 @@
     			form.submit();
     		}
     	} 
-
         
-        $(document).ready( function(e){
+        $(document).ready(function(){
+            $('#paging > span[class!="bbs-strong"]').click(function(e){
+                var page = $(this).attr('articleno');
+                window.location.href = "/board/articlelist/${boardcd}?curPage="+page +"&searchWord=${searchWord}";
+            })
+            $('#list-menu > input[type="button"]').click(function(e){
+                    window.location.href = "/board/articlewrite/${boardcd}?curPage=${curPage}&searchWord=${searchWord}";
+                });
+            
+
+            $('.modify_button').click(function(e){
+            	window.location.href = "/board/articlemodify/${boardcd}/${articleno}?curPage=${curPage}&searchWord=${searchWord}";
+            	 
+            });
+            
+            $('.delete_button').click(function(e){
+            	alert(mag);
+                window.location.href = "/board/articledelete/${boardcd}/${articleno}?curPage=${curPage}&searchWord=${searchWord}";
+                alert(mag);
+            });
+            
+            
+            });
+        //function goModify(articleno) {
+//        	window.location.href = "/board/articlemodify/${boardcd}/" + articleno + "?curPage=${curPage}&searchWord=${searchWord}";
+        //}
+        
+        
+        function goView(articleno) {
+            window.location.href = "/board/articleview/${boardcd}/" + articleno + "?curPage=${curPage}&searchWord=${searchWord}";
+        }
+        	        	
             $( document ).ajaxStart(function() { // 통신이 시작되기 전에 이 함수를 타게 된다.
                 $('body').prepend('<img src="/resources/images/loading.gif">');
             });
@@ -106,7 +114,7 @@
                 
                 return false;
             });
-        });
+
         
         function commentModifyShowHide(commentno) {
             $('div[commentno="'+ commentno +'"]  div.modify-comment').toggle(); 
@@ -228,8 +236,8 @@
             	
             	<div id="view-menu">
             		<div class="fl">
-            			<input type="button" value="수정" onclick="goModify();" />
-            			<input type="button" value="삭제" onclick="goDelete()" />
+            			<input type="button" value="수정" class='modify_button'/>
+            			<input type="button" value="삭제" class='delete_button'/>
             		</div>
             		
             		<div class="fr">
@@ -244,78 +252,7 @@
             		</div>
             	</div>
             
-            	<table style="clear: both;">
-                	<tr>
-                		<th style="width: 60px">NO</th>
-                		<th>TITLE</th>
-                		<th style="width: 84px;">DATE</th>
-                		<th style="width: 60px;">HIT</th>
-                	</tr>
-                	
-                	<!--  반복 구간 시작 -->
-                	<c:forEach var="article" items="${articleList }" varStatus="status">
-                	<tr>
-                		<td style="text-align: center;">
-                			<c:choose>
-                				<c:when test="${articleno == article.articleno }">
-                					<img src="/resources/images/arrow.gif" alt="현재글" />
-                				</c:when>
-                				<c:otherwise>
-                					${no - status.index }
-                				</c:otherwise>
-                			</c:choose>
-                		</td>
-                		<td>
-                			<a href="javascript:goView('${article.articleno }')">${article.title }</a>
-                			<c:if test="${article.attachFileNum > 0 }">
-                				<img src="/resources/images/attach.png" alt="첨부파일" />
-                			</c:if>
-                			<c:if test="${article.commentNum > 0 }">
-                				<span class="bbs-strong">[${article.commentNum }]</span>
-                			</c:if>
-                		</td>
-                		<td style="text-align: center;"><fmt:formatDate pattern="yyyy-MM-dd" value="${article.regdate }" /></td>
-                		<td style="text-align: center;">${article.hit }</td>
-                	</tr>
-                	</c:forEach>
-                	<!--  반복 구간 끝 -->
-            	</table>
-            		
-            	<div id="paging" style="text-align: center;">            		
-            		<c:if test="${prevPage > 0 }">
-            			<a href="javascript:goList('${prevPage }')">[이전]</a>
-            		</c:if>
-            		
-            		<c:forEach var="i" items="${pageLinks }" varStatus="stat">
-            			<c:choose>
-            			<c:when test="${curPage == i}">
-            				<span class="bbs-strong">${i }</span>
-            			</c:when>
-            			<c:otherwise>
-            				<a href="javascript:goList('${i }')">${i }</a>
-            			</c:otherwise>
-            			</c:choose>
-            		</c:forEach>
-            		
-            		<c:if test="${nextLink > 0 }">
-            			<a href="javascript:goList('${nextPage }')">[다음]</a>
-            		</c:if>            		
-            	</div>
-   
-            
-            	<div id="list-menu" style="text-align:  right;">
-            		<input type="button" value="새글쓰기" onclick="goWrite()" />
-            	</div>
-            
-            	<div id="search" style="text-align: center;">
-            		<form id="searchForm" action="./articlelist" method="get" style="margin: 0;padding: 0;">
-            			<p style="margin: 0;padding: 0;">
-            				<input type="hidden" name="boardcd" value="${boardcd }" />
-            				<input type="text" name="searchWord" size="15" maxlength="30" />
-            				<input type="submit" value="검색" />
-            			</p>	
-            		</form>
-            	</div>
+            	<%@ include file = "articlelist-table.jsp" %>
             	
             </div>
             <!--  본문 끝 -->
@@ -346,29 +283,7 @@
 			<input type="hidden" name="filename" />
 		</p>
 	</form>
-	<form id="listForm" action="./articlelist" method="get">
-		<p>
-			<input type="hidden" name="boardcd" value="${boardcd }" />
-			<input type="hidden" name="curPage" />
-			<input type="hidden" name="searchWord" value="${searchWord }" />
-		</p>
-	</form>
-		<form id="viewForm" action="./articleview" method="get">
-		<p>
-			<input type="hidden" name="articleno" />
-			<input type="hidden" name="boardcd" value="${boardcd }" />
-			<input type="hidden" name="curPage" value="${curPage }" />
-			<input type="hidden" name="searchWord" value="${searchWord }" />
-		</p>
-	</form>
-	<form id="writeForm" action="./articlewrite" method="get">
-		<p>
-			<input type="hidden" name="articleno" value="${articleno }" />
-			<input type="hidden" name="boardcd" value="${boardcd }" />
-			<input type="hidden" name="curPage" value="${curPage }" />
-			<input type="hidden" name="searchWord" value="${searchWord }" />
-		</p>
-	</form>
+	
 	<form id="modifyForm" action="./articlemodify" method="get">
 		<p>
 			<input type="hidden" name="articleno" value="${articleno }" />

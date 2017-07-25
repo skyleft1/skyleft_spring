@@ -103,7 +103,6 @@ public class ServiceBoard implements IServiceBoard {
             logger.error("deleteBoard" + e.getMessage() );
             throw e;
         }
-
         return result;
     }
 
@@ -144,10 +143,7 @@ public class ServiceBoard implements IServiceBoard {
         try {
             result = daoboard.insertBoardList(board);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            // e.printStackTrace();
             logger.error("insertBoardList" + e.getMessage() );
-            throw e;
         }
         return result;
     }
@@ -391,6 +387,12 @@ public class ServiceBoard implements IServiceBoard {
             throw e;
         }
         return result;
+    }
+
+    @Override
+    public int getBoardTotalRecord(String boardcd, String searchWord) {
+        // TODO Auto-generated method stub
+        return 0;
     }
     
     

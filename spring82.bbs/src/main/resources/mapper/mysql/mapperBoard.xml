@@ -49,7 +49,7 @@
               <if test="searchValue.boardnm != null and searchValue.boardnm != ''">
               AND boardnm  = #{searchValue.boardnm}
               </if>
-              <if test="searchValue.UseYN != null">
+              <if test="searchValue.UseYN != null and searchValue.UseYN != ''">
               AND UseYN    = #{searchValue.UseYN}
               </if>
     </update>
@@ -117,6 +117,17 @@
                 #{item.boardcd} , #{item.boardnm} , #{item.UseYN}
             </foreach>
     </insert>
+    
+    <select id="getBoardTotalRecord" parameterType="hashmap" resultType="int">
+    SELECT count(*) FROM TB_BBS_Board
+        WHERE 1 = 1
+        <if test="boardcd != null and boardcd != ''">
+            AND boardcd = #{boardcd}
+        </if>
+        <if test="searchWord != null and searchWord != ''">
+            AND boardnm LIKE #{searchWord}
+        </if>
+    </select> 
     
     <select id="getArticleTotalRecord" parameterType="hashmap" resultType="int">
         SELECT count(*) FROM TB_BBS_Article 
@@ -223,7 +234,7 @@
                 (SELECT articleno, title 
                    FROM TB_BBS_Article 
                   WHERE boardcd = #{boardcd} 
-                    AND articleno = #{articleno}
+                    AND articleno &gt; #{articleno}
                     <if test="searchWord != null">
                         AND (title LIKE CONCAT('%', #{searchWord},'%') OR
                         content LIKE CONCAT('%', #{searchWord},'%') )
@@ -244,11 +255,11 @@
             (SELECT articleno, title 
                FROM TB_BBS_Article 
               WHERE boardcd = #{boardcd} 
-                AND articleno = #{articleno}
-                <if test="searchWord != null">
-                    AND (title LIKE '%#{searchWord}%' OR
-                    content LIKE '%#{searchWord}%')
-                </if> 
+                AND articleno &lt; #{articleno}
+                    <if test="searchWord != null">
+                        AND (title LIKE CONCAT('%', #{searchWord},'%') OR
+                        content LIKE CONCAT('%', #{searchWord},'%') )
+                    </if>
                 ORDER BY articleno DESC
             ) a
             , (SELECT @RNUM:=0) b
